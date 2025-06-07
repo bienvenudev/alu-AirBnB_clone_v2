@@ -11,9 +11,9 @@ from os.path import exists
 def do_pack(c):
     """Create a .tgz archive from the web_static folder."""
     time_stamp = datetime.now().strftime("%Y%m%d%H%M%S")
-    c.run("mkdir -p versions")
+    c.local("mkdir -p versions")  # Change from c.run to c.local
     archive_path = "versions/web_static_{}.tgz".format(time_stamp)
-    c.run("tar -cvzf {} web_static".format(archive_path))
+    c.local("tar -cvzf {} web_static".format(archive_path))  # Change from c.run to c.local
     if os.path.exists(archive_path):
         return archive_path
     else:
