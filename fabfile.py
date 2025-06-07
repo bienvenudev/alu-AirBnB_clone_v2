@@ -10,6 +10,7 @@ from os.path import exists
 # Web server IPs
 hosts = ["18.212.50.164", "44.206.233.118"]
 
+
 @task
 def do_pack(_):
     """Create a .tgz archive from the web_static folder."""
@@ -48,7 +49,8 @@ def do_deploy(c, archive_path):
             conn = Connection(
                 host=host,
                 user="ubuntu",
-                connect_kwargs={"key_filename": "~/.ssh/school"}
+                connect_kwargs={
+                    "key_filename": os.path.expanduser("~/.ssh/school")}
             )
 
             print("📤 Uploading archive...")
