@@ -12,7 +12,14 @@ import os
 @task
 def do_pack(c):
     """Function to generate a .tgz archive from the contents of the web_static
-    folder."""
+    folder.
+    
+    Args:
+        c: Fabric connection context
+        
+    Returns:
+        str: Path to the created archive if successful, None otherwise
+    """
 
     time_stamp = datetime.now().strftime("%Y%m%d%H%M%S")
     c.run("mkdir -p versions")
