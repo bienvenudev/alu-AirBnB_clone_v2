@@ -2,21 +2,29 @@
 """Fabric script that creates and distributes an archive to your web servers"""
 
 import os
-from fabric import task, Connection
+from fabric import task, Connection  # For remote connections
 from datetime import datetime
 from os.path import exists
-
+from invoke import Context  # For local commands
 
 @task
-def do_pack(c):
+def do_pack(_):
     """Create a .tgz archive from the web_static folder."""
     time_stamp = datetime.now().strftime("%Y%m%d%H%M%S")
-    c.local("mkdir -p versions")  # Change from c.run to c.local
+    local = Context()
     archive_path = "versions/web_static_{}.tgz".format(time_stamp)
-    c.local("tar -cvzf {} web_static".format(archive_path))  # Change from c.run to c.local
-    if os.path.exists(archive_path):
-        return archive_path
-    else:
+    
+    try:
+        local.run("mkdir -p versions")
+        local.run(f"tar -cvzf {archive_path} web_static")
+        if os.path.exists(archive_path):
+            print(f"Archive created: {archive_path}")
+            return archive_path
+        else:
+            print("Failed to create archive")
+            return None
+    except Exception as e:
+        print(f"Error creating archive: {e}")
         return None
 
 
